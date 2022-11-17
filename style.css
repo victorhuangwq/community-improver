@@ -1,0 +1,18 @@
+.explanation-block {
+  border: 1px solid rgb(1, 67, 97);
+  background-color: rgb(229, 246, 253);
+  color: rgb(1, 67, 97);
+  border-radius: 5px;
+  margin-left: 6px;
+  padding: 2vh 3vw;
+  display: flex;
+  justify-content: flex-start;
+}
+svg {
+  fill: rgb(1, 67, 97);
+  width: 20px;
+}
+.svg-wrapper {
+  width: 20px;
+  margin-right: 1vw;
+}
