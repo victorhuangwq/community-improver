@@ -3,16 +3,29 @@
   background-color: rgb(229, 246, 253);
   color: rgb(1, 67, 97);
   border-radius: 5px;
-  margin-left: 6px;
-  padding: 2vh 3vw;
+  margin-left: 12px;
+  padding: 2vh 1.5vw;
   display: flex;
   justify-content: flex-start;
 }
-svg {
+.svg-wrapper svg {
   fill: rgb(1, 67, 97);
   width: 20px;
 }
 .svg-wrapper {
   width: 20px;
   margin-right: 1vw;
+}
+.explanation-column {
+  display: flex;
+  flex-direction: column;
+}
+.explanation-reply {
+  padding: 2vh 1.5vw;
+  background-color: white;
+  border-radius: 5px;
+  margin-top: 1vh;
+}
+.explanation-reply:hover {
+  cursor: pointer;
 }
