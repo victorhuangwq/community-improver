@@ -20,7 +20,7 @@ const injectBlock = ({ id, explanation }) => {
   const newEle = document.createElement("div");
   newEle.className = "explanation-block";
   newEle.innerHTML = `<div class="svg-wrapper">${svg}</div><p>${explanation}</p>`;
-  ele.appendChild(newEle);
+  if (ele) ele.appendChild(newEle);
   console.log(id, ele, newEle);
 };
 
@@ -34,7 +34,12 @@ function injectCSS() {
 
 window.onload = () => {
   injectCSS();
-  config.forEach(injectBlock);
+  config
+    .filter(({ page }) => {
+      console.log(window.location.href);
+      return window.location.href.includes(page);
+    })
+    .forEach(injectBlock);
 };
 
 // // `document.querySelector` may return null if the selector doesn't match anything.
