@@ -29,3 +29,6 @@
 .explanation-reply:hover {
   cursor: pointer;
 }
+.reply-prompt {
+  font-weight: bold;
+}
