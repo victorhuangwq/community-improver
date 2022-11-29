@@ -10,6 +10,7 @@ const config = [
   {
     page: "what_sin_had_i_committed_in_my_past_life_that_i",
     id: "t1_ix28kvg",
+    replacement_text: "this is why you shouldn't study cs if you're a girl lol",
     explanation:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     replies: ["hi this is a reply", "do better"],
@@ -33,9 +34,11 @@ const config = [
     replies: ["another sample reply", "this was really rude. stop."],
   },
 ];
-const injectBlock = ({ id, explanation, replies }) => {
+const injectBlock = ({ id, explanation, replies, replacement_text }) => {
   const ele = document.getElementById(id);
-  console.log(ele);
+  const text = ele.querySelector(".RichTextJSON-root").querySelector("p");
+  console.log("text", text);
+  text.innerHTML = replacement_text ?? text.innerHTML;
   const newEle = document.createElement("div");
   const replyBlocks = replies.map((reply) => {
     return `
