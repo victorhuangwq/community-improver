@@ -34,8 +34,18 @@ const config = [
     replies: ["another sample reply", "this was really rude. stop."],
   },
 ];
+
+const getParent = (id) => {
+  const commentDiv = document.querySelector(`#${id} > .Comment`);
+
+  // Get second div inside commentDiv
+  return commentDiv.children[2];
+};
+
 const injectBlock = ({ id, explanation, replies, replacement_text }) => {
-  const ele = document.getElementById(id);
+  // Get second div inside commentDiv
+  const ele = getParent(id);
+
   const text = ele.querySelector(".RichTextJSON-root").querySelector("p");
   console.log("text", text);
   text.innerHTML = replacement_text ?? text.innerHTML;
@@ -101,8 +111,9 @@ const commentGenerator = (avatar, userName, comment_id, comment) => {
   const commentDiv = document.querySelector(`#${comment_id} > .Comment`);
 
   // Get second div inside commentDiv
-  const parent = commentDiv.children[2];
+  const parent = getParent(comment_id);
   const cloneDiv = commentDiv.cloneNode(true);
+  cloneDiv.querySelector(".explanation-block").remove();
 
   // Replace div's avatar with avatar
   cloneDiv.querySelector('img[alt="User avatar"]').src = avatar
