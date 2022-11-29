@@ -105,7 +105,9 @@ const commentGenerator = (avatar, userName, comment_id, comment) => {
   const cloneDiv = commentDiv.cloneNode(true);
 
   // Replace div's avatar with avatar
-  cloneDiv.querySelector('img[alt="User avatar"]').src = avatar.src;
+  cloneDiv.querySelector('img[alt="User avatar"]').src = avatar
+    ? avatar.src
+    : "https://github.com/victorhuangwq/community-improver/blob/block-explanation/images/default_pfp.png?raw=true";
   // Replace username with the userName
   cloneDiv.querySelector('a[data-testid="comment_author_link"]').innerText =
     userName;
@@ -132,9 +134,7 @@ const commentGenerator = (avatar, userName, comment_id, comment) => {
 const addComment = (parent_comment_id, comment) => {
   console.log("comment", comment);
   const userDropdown = document.querySelector("#USER_DROPDOWN_ID");
-  const avatar =
-    userDropdown.querySelector('img[alt="User avatar"]') ??
-    userDropdown.querySelector("svg");
+  const avatar = userDropdown.querySelector('img[alt="User avatar"]');
   // Getting user name, get first span of #email-collection-tooltip-id
   const userName = document
     .querySelector("#email-collection-tooltip-id")
