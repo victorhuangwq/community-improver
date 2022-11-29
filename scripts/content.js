@@ -114,6 +114,9 @@ const commentGenerator = (avatar, userName, comment_id, comment) => {
   const parent = getParent(comment_id);
   const cloneDiv = commentDiv.cloneNode(true);
   cloneDiv.querySelector(".explanation-block").remove();
+  cloneDiv.querySelectorAll(".inserted-comment").forEach((comment) => {
+    comment.remove();
+  });
 
   // Replace div's avatar with avatar
   cloneDiv.querySelector('img[alt="User avatar"]').src = avatar
@@ -138,6 +141,9 @@ const commentGenerator = (avatar, userName, comment_id, comment) => {
     .querySelector("p").innerText = comment;
 
   cloneDiv.style.zIndex = 99999;
+
+  cloneDiv.classList.add("inserted-comment");
+
   // Append cloneDiv to parent
   parent.appendChild(cloneDiv);
 };
