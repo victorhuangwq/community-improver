@@ -41,10 +41,13 @@ const injectBlock = ({ id, explanation, replies, replacement_text }) => {
   text.innerHTML = replacement_text ?? text.innerHTML;
   const newEle = document.createElement("div");
   const replyBlocks = replies.map((reply) => {
-    return `
-      <div class="explanation-reply">
-        <p>${reply}</p>
-      </div>`;
+    const replyEle = document.createElement("div");
+    replyEle.classList.add("explanation-reply");
+    replyEle.innerHTML = `<p>${reply}</p>`;
+    replyEle.onclick = () => {
+      addComment(id, reply);
+    };
+    return replyEle;
   });
   newEle.className = "explanation-block";
   newEle.innerHTML = `
@@ -59,9 +62,14 @@ const injectBlock = ({ id, explanation, replies, replacement_text }) => {
         You can make the internet a better place by educating the user about why their reply is harmful. Choose from one of the prompts to post a reply from ${
           mode === "bot" ? "a bot" : "your account"
         }:</p>
-      ${replyBlocks.join("")}
+        <div id="replies"></div>
     </div>`;
-  if (ele) ele.appendChild(newEle);
+  if (ele) {
+    ele.appendChild(newEle);
+    replyBlocks.forEach((reply) => {
+      document.getElementById("replies").appendChild(reply);
+    });
+  }
 };
 
 function injectCSS() {
@@ -88,23 +96,53 @@ window.onload = () => {
   // document.querySelector(".DraftEditor-root").onclick = injectComments;
 };
 
-// // `document.querySelector` may return null if the selector doesn't match anything.
-// if (article) {
-//   const text = article.textContent;
-//   const wordMatchRegExp = /[^\s]+/g; // Regular expression
-//   const words = text.matchAll(wordMatchRegExp);
-//   // matchAll returns an iterator, convert to array to get word count
-//   const wordCount = [...words].length;
-//   const readingTime = Math.round(wordCount / 200);
-//   const badge = document.createElement("p");
-//   // Use the same styling as the publish information in an article's header
-//   badge.classList.add("color-secondary-text", "type--caption");
-//   badge.textContent = `⏱️ ${readingTime} min read`;
+const commentGenerator = (avatar, userName, comment_id, comment) => {
+  // extract div with comment_id
+  const commentDiv = document.querySelector(`#${comment_id} > .Comment`);
 
-//   // Support for API reference docs
-//   const heading = article.querySelector("h1");
-//   // Support for article docs with date
-//   const date = article.querySelector("time")?.parentNode;
+  // Get second div inside commentDiv
+  const parent = commentDiv.children[2];
+  const cloneDiv = commentDiv.cloneNode(true);
 
-//   (date ?? heading).insertAdjacentElement("afterend", badge);
-// }
+  // Replace div's avatar with avatar
+  cloneDiv.querySelector('img[alt="User avatar"]').src = avatar.src;
+  // Replace username with the userName
+  cloneDiv.querySelector('a[data-testid="comment_author_link"]').innerText =
+    userName;
+  // Remove OP label if it exists
+  cloneDiv.querySelector(`#CommentTopMeta--OP--${comment_id}`)?.remove();
+  // Change time to 1 second ago
+  cloneDiv.querySelector(`#CommentTopMeta--Created--${comment_id}`).innerText =
+    "1 second ago";
+  // Change # of upvotes to 1
+  cloneDiv
+    .querySelector(`#vote-arrows-${comment_id}`)
+    .querySelector("div").innerText = "1";
+
+  // Replace div's comment with comment
+  cloneDiv
+    .querySelector('div[data-testid="comment"]')
+    .querySelector("p").innerText = comment;
+
+  cloneDiv.style.zIndex = 99999;
+  // Append cloneDiv to parent
+  parent.appendChild(cloneDiv);
+};
+
+const addComment = (parent_comment_id, comment) => {
+  console.log("comment", comment);
+  const userDropdown = document.querySelector("#USER_DROPDOWN_ID");
+  const avatar =
+    userDropdown.querySelector('img[alt="User avatar"]') ??
+    userDropdown.querySelector("svg");
+  // Getting user name, get first span of #email-collection-tooltip-id
+  const userName = document
+    .querySelector("#email-collection-tooltip-id")
+    .querySelector("span")
+    .querySelector("span").innerText;
+  commentGenerator(avatar, userName, parent_comment_id, comment);
+};
+
+// setTimeout(() => {
+//   addComment("t1_iwpmzi3", "comment");
+// }, 3000);
