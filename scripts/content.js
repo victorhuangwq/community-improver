@@ -1,5 +1,44 @@
 const article = document.querySelector("article");
 
+const commentGenerator = (avatar, userName, comment_id, comment) => {
+    
+    // extract div with comment_id
+    const commentDiv = document.querySelector(`#${comment_id} > .Comment`);
+    
+    // Get second div inside commentDiv
+    const parent = commentDiv.children[2];
+    const cloneDiv = commentDiv.cloneNode(true);
+
+    // Replace div's avatar with avatar
+    cloneDiv.querySelector('img[alt="User avatar"]').src = avatar.src;
+    // Replace username with the userName
+    cloneDiv.querySelector('a[data-testid="comment_author_link"]').innerText = userName;
+    // Remove OP label if it exists
+    cloneDiv.querySelector(`#CommentTopMeta--OP--${comment_id}`)?.remove();
+    // Change time to 1 second ago
+    cloneDiv.querySelector(`#CommentTopMeta--Created--${comment_id}`).innerText = "1 second ago";
+    // Change # of upvotes to 1
+    cloneDiv.querySelector(`#vote-arrows-${comment_id}`).querySelector('div').innerText = "1";
+
+    // Replace div's comment with comment
+    cloneDiv.querySelector('div[data-testid="comment"]').querySelector('p').innerText = comment;
+    
+    cloneDiv.style.zIndex = 99999;
+    // Append cloneDiv to parent
+    parent.appendChild(cloneDiv);
+};
+
+const addComment = (parent_comment_id, comment) => {
+  const avatar = document.querySelector("#USER_DROPDOWN_ID").querySelector('img[alt="User avatar"]');
+  // Getting user name, get first span of #email-collection-tooltip-id
+  const userName = document.querySelector("#email-collection-tooltip-id").querySelector('span').querySelector('span').innerText;
+  commentGenerator(avatar, userName, parent_comment_id, comment);
+}
+
+setTimeout(() => {
+  addComment("t1_iwpmzi3", "comment");
+}, 3000);
+
 // `document.querySelector` may return null if the selector doesn't match anything.
 if (article) {
   const text = article.textContent;
@@ -20,3 +59,4 @@ if (article) {
 
   (date ?? heading).insertAdjacentElement("afterend", badge);
 }
+
