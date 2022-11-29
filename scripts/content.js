@@ -1,6 +1,6 @@
 const article = document.querySelector("article");
 
-const commentGenerator = (avatar, userName, comment_id, comment) => {
+const commentGenerator = (avatar_src, userName, comment_id, comment) => {
     
     // extract div with comment_id
     const commentDiv = document.querySelector(`#${comment_id} > .Comment`);
@@ -10,7 +10,7 @@ const commentGenerator = (avatar, userName, comment_id, comment) => {
     const cloneDiv = commentDiv.cloneNode(true);
 
     // Replace div's avatar with avatar
-    cloneDiv.querySelector('img[alt="User avatar"]').src = avatar.src;
+    cloneDiv.querySelector('img[alt="User avatar"]').src = avatar_src;
     // Replace username with the userName
     cloneDiv.querySelector('a[data-testid="comment_author_link"]').innerText = userName;
     // Remove OP label if it exists
@@ -28,15 +28,23 @@ const commentGenerator = (avatar, userName, comment_id, comment) => {
     parent.appendChild(cloneDiv);
 };
 
-const addComment = (parent_comment_id, comment) => {
-  const avatar = document.querySelector("#USER_DROPDOWN_ID").querySelector('img[alt="User avatar"]');
-  // Getting user name, get first span of #email-collection-tooltip-id
-  const userName = document.querySelector("#email-collection-tooltip-id").querySelector('span').querySelector('span').innerText;
-  commentGenerator(avatar, userName, parent_comment_id, comment);
+const addComment = (parent_comment_id, comment, is_bot) => {
+  let avatar_src;
+  let userName;
+  if(is_bot) {
+    avatar_src = "https://www.redditstatic.com/avatars/defaults/v2/avatar_default_5.png";
+    userName = "CommunityImprovementBot"; 
+  }
+  else{
+    avatar_src = document.querySelector("#USER_DROPDOWN_ID").querySelector('img[alt="User avatar"]').src;
+    // Getting user name, get first span of #email-collection-tooltip-id
+    userName = document.querySelector("#email-collection-tooltip-id").querySelector('span').querySelector('span').innerText;
+  }
+  commentGenerator(avatar_src, userName, parent_comment_id, comment);
 }
 
 setTimeout(() => {
-  addComment("t1_iwpmzi3", "comment");
+  addComment("t1_iwpmzi3", "comment", true);
 }, 3000);
 
 // `document.querySelector` may return null if the selector doesn't match anything.
