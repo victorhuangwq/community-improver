@@ -2,6 +2,7 @@
   font-family: "Noto Sans" !important;
   font-size: 14px;
 }
+
 .explanation-block {
   border: 1px solid rgb(1, 67, 97);
   background-color: rgb(229, 246, 253);
@@ -11,24 +12,35 @@
   display: flex;
   justify-content: flex-start;
 }
+
 .svg-wrapper svg {
   fill: rgb(1, 67, 97);
   width: 20px;
 }
+
 .svg-wrapper {
   width: 20px;
   margin-right: 1vw;
 }
+
 .explanation-column {
   display: flex;
   flex-direction: column;
 }
+
 .explanation-reply {
   padding: 2vh 1.5vw;
   background-color: white;
   border-radius: 5px;
   margin-top: 1vh;
 }
+
 .explanation-reply:hover {
   cursor: pointer;
+}
+
+.comment-text {
+  font-family: "Noto Sans" !important;
+  font-size: 14px;
+  color: #D7DADC;
 }
