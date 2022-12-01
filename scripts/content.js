@@ -2,7 +2,7 @@
 let method = "perspectiveTaking";
 
 // options = bot, user
-let mode = "user";
+let mode = "bot";
 
 const delayInMilliseconds = 200 + Math.random() * 100; //delay to allow for the comment to be posted
 
@@ -128,7 +128,7 @@ const commentGenerator = (avatar, userName, comment_id, comment) => {
   // Replace div's avatar with avatar
   cloneDiv.querySelector('img[alt="User avatar"]').src = avatar
     ? avatar.src
-    : "https://github.com/victorhuangwq/community-improver/blob/block-explanation/images/default_pfp.png?raw=true";
+    : "https://www.redditstatic.com/avatars/defaults/v2/avatar_default_6.png";
   
   // Replace username with the userName
   cloneDiv.querySelector('a[data-testid="comment_author_link"]').innerText =
@@ -181,7 +181,12 @@ const addComment = (parent_comment_id, comment) => {
   
   // Adds delay to make it feel real
   setTimeout(function() {
-    commentGenerator(avatar, userName, parent_comment_id, comment);
+    if(mode === "bot"){
+      commentGenerator(null, "Community Improver", parent_comment_id, comment);
+    }
+    else{
+      commentGenerator(avatar, userName, parent_comment_id, comment);
+    }
   }, delayInMilliseconds);
 
 };
