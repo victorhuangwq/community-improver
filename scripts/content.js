@@ -59,6 +59,8 @@ const injectBlock = ({ id, explanation, replies, replacement_text }) => {
   console.log("text", text);
   text.innerHTML = replacement_text ?? text.innerHTML;
 
+  ele.querySelector('.RichTextJSON-root').innerHTML = text.outerHTML;
+  
   const newEle = document.createElement("div");
   const replyBlocks = replies.map((reply) => {
     const replyEle = document.createElement("div");
@@ -127,9 +129,11 @@ const commentGenerator = (avatar, userName, comment_id, comment) => {
   cloneDiv.querySelector('img[alt="User avatar"]').src = avatar
     ? avatar.src
     : "https://github.com/victorhuangwq/community-improver/blob/block-explanation/images/default_pfp.png?raw=true";
+  
   // Replace username with the userName
   cloneDiv.querySelector('a[data-testid="comment_author_link"]').innerText =
     userName;
+  
   // Remove OP label if it exists
   cloneDiv.querySelector(`#CommentTopMeta--OP--${comment_id}`)?.remove();
 
@@ -141,6 +145,7 @@ const commentGenerator = (avatar, userName, comment_id, comment) => {
   // Change time to 1 second ago
   cloneDiv.querySelector(`#CommentTopMeta--Created--${comment_id}`).innerText =
     "1 second ago";
+  
   // Change # of upvotes to 1
   cloneDiv
     .querySelector(`#vote-arrows-${comment_id}`)
@@ -163,6 +168,7 @@ const commentGenerator = (avatar, userName, comment_id, comment) => {
 };
 
 const addComment = (parent_comment_id, comment) => {
+  
   console.log("comment", comment);
   const userDropdown = document.querySelector("#USER_DROPDOWN_ID");
   const avatar = userDropdown.querySelector('img[alt="User avatar"]');
