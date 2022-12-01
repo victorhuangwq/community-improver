@@ -1,6 +1,7 @@
 // options = perspectiveTaking, greaterGood
 let method = "perspectiveTaking";
-
+// sets sexism type
+let sexism_type = "hostile";
 // options = bot, user
 let mode = "bot";
 
@@ -21,22 +22,24 @@ const getSecondDiv = (id) => {
 // initializes data from data.js
 const initialize = () => {
   data.forEach((comment) => {
-    const object = {};
-    const bot_replies = [];
-    const user_replies = [];
-    for (const key in comment) {
-      if(key.includes("bot_reply_")){
-        bot_replies.push(comment[key])
+    if (comment.sexism_type === sexism_type) {
+      const object = {};
+      const bot_replies = [];
+      const user_replies = [];
+      for (const key in comment) {
+        if(key.includes("bot_reply_")){
+          bot_replies.push(comment[key])
+        }
+        else if(key.includes("reply_")){
+          user_replies.push(comment[key])
+        }
+        else{
+          object[key] = comment[key];
+        }
       }
-      else if(key.includes("reply_")){
-        user_replies.push(comment[key])
-      }
-      else{
-        object[key] = comment[key];
-      }
+      object.replies = mode === "bot" ? bot_replies : user_replies;
+      config.push(object);
     }
-    object.replies = mode === "bot" ? bot_replies : user_replies;
-    config.push(object);
   });
 }
 
@@ -182,7 +185,7 @@ const addComment = (parent_comment_id, comment) => {
   // Adds delay to make it feel real
   setTimeout(function() {
     if(mode === "bot"){
-      commentGenerator(null, "Community Improver", parent_comment_id, comment);
+      commentGenerator(null, "Community Bot", parent_comment_id, comment);
     }
     else{
       commentGenerator(avatar, userName, parent_comment_id, comment);
