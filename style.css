@@ -42,5 +42,6 @@
 .comment-text {
   font-family: "Noto Sans" !important;
   font-size: 14px;
-  color: #D7DADC;
+  color: #1c1c1c;
+  line-height: normal;
 }
