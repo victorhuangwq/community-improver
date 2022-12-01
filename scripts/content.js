@@ -4,36 +4,10 @@ let method = "perspectiveTaking";
 // options = bot, user
 let mode = "user";
 
+const config = [];
+
 const svg =
   '<svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1cw4hi4" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="InfoOutlinedIcon"><path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20, 12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10, 10 0 0,0 12,2M11,17H13V11H11V17Z"></path></svg>';
-const config = [
-  {
-    page: "what_sin_had_i_committed_in_my_past_life_that_i",
-    id: "t1_ix28kvg",
-    replacement_text: "this is why you shouldn't study cs if you're a girl lol",
-    explanation:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    replies: ["hi this is a reply", "do better"],
-  },
-  {
-    page: "r/cmu/comments/yxk0p7/what_do_you_think_of_the_future_of_the_tech/",
-    id: "t1_iwq89qz",
-    explanation: "this is a mean post",
-    replies: ["another sample reply", "this was really rude. stop."],
-  },
-  {
-    page: "r/AskMen/comments/yza1z7/how_does_it_make_you_feel_when_you_know_that/",
-    id: "t1_iwz0htv",
-    explanation: "this is a mean post",
-    replies: ["another sample reply", "this was really rude. stop."],
-  },
-  {
-    page: "r/AskMen/comments/yza1z7/how_does_it_make_you_feel_when_you_know_that/",
-    id: "t1_iwz4md4",
-    explanation: "this is really sexist.",
-    replies: ["another sample reply", "this was really rude. stop."],
-  },
-];
 
 const getParent = (id) => {
   const commentDiv = document.querySelector(`#${id} > .Comment`);
@@ -41,6 +15,27 @@ const getParent = (id) => {
   // Get second div inside commentDiv
   return commentDiv.children[2];
 };
+
+const initialize = () => {
+  data.forEach((comment) => {
+    const object = {};
+    const bot_replies = [];
+    const user_replies = [];
+    for (const key in comment) {
+      if(key.includes("bot_reply_")){
+        bot_replies.push(comment[key])
+      }
+      else if(key.includes("reply_")){
+        user_replies.push(comment[key])
+      }
+      else{
+        object[key] = comment[key];
+      }
+    }
+    object.replies = mode === "bot" ? bot_replies : user_replies;
+    config.push(object);
+  });
+}
 
 const injectBlock = ({ id, explanation, replies, replacement_text }) => {
   // Get second div inside commentDiv
@@ -101,6 +96,7 @@ const injectComments = () => {
 };
 
 window.onload = () => {
+  initialize();
   injectCSS();
   injectComments();
   // document.querySelector(".DraftEditor-root").onclick = injectComments;
@@ -127,6 +123,12 @@ const commentGenerator = (avatar, userName, comment_id, comment) => {
     userName;
   // Remove OP label if it exists
   cloneDiv.querySelector(`#CommentTopMeta--OP--${comment_id}`)?.remove();
+
+  // Remove flair if it exists
+  if(cloneDiv.querySelector('div[data-testid="post-comment-header"]').children.length > 1){
+    cloneDiv.querySelector('div[data-testid="post-comment-header"]').children[1].remove();
+  }
+
   // Change time to 1 second ago
   cloneDiv.querySelector(`#CommentTopMeta--Created--${comment_id}`).innerText =
     "1 second ago";
@@ -136,9 +138,12 @@ const commentGenerator = (avatar, userName, comment_id, comment) => {
     .querySelector("div").innerText = "1";
 
   // Replace div's comment with comment
+  const paragraph = cloneDiv.querySelector(".RichTextJSON-root").querySelector("p");
+  paragraph.innerText = comment;
+  paragraph.classList.add("comment-text");
+
   cloneDiv
-    .querySelector('div[data-testid="comment"]')
-    .querySelector("p").innerText = comment;
+    .querySelector('div[data-testid="comment"]').innerHTML = paragraph.outerHTML;
 
   cloneDiv.style.zIndex = 99999;
 
