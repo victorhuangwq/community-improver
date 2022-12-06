@@ -17,6 +17,8 @@ This extension was created as a final project for 05-380 Prototyping Algorithmic
 ### Loading Changes
 
 Whenever you need to update any files in community-improver, you need to press the refresh button on the "Community Improver" panel in the chrome://extensions/ page.
+![image](https://user-images.githubusercontent.com/50491000/205958714-3b727d9b-ebd0-4388-8cab-3b4026b05ad9.png)
+
 
 ### Updating the Configuration
 
