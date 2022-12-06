@@ -4,10 +4,10 @@ const data = [
     "id": "t1_iwc8xe9",
     "replacement_text": "I think it should. FAANG has a lot of prestige both in industry and academia, so I'd recommend it especially if you're a guy. If you're a woman, you should just sleep with the admissions committee to get accepted. It's what women are best at.",
     "sexism_type": "hostile",
-    "explanation": "This comment is a display of hostile sexism. The author is obviously harassing OP suggesting women should use sexual favors.",
-    "reply_1": "Ideas like this foster an unsafe environment for women on campus. Women are here to learn just like everyone else.",
+    "explanation": "This comment is a display of hostile sexism. The author is harassing OP suggesting women should use sexual favors.",
+    "reply_1": "Jokes\" like this create an unsafe environment for women on campus. Women are here to learn just like everyone else.",
     "reply_2": "What do you mean by \"you should just sleep with the admissions committee to get accepted\"?",
-    "bot_reply_1": "Ideas like this foster an unsafe environment for women on campus. Women are here to learn just like everyone else.",
+    "bot_reply_1": "Jokes\" like this create an unsafe environment for women on campus. Women are here to learn just like everyone else.",
     "bot_reply_2": "What do you mean by \"you should just sleep with the admissions committee to get accepted\"?"
   },
   {
@@ -16,13 +16,12 @@ const data = [
     "replacement_text": "I think it should. FAANG has a lot of prestige both in industry and academia. Also if you're a minority (i.e. female) that will help your chances a lot.",
     "sexism_type": "innocuous",
     "explanation": "This comment is a display of innocuous sexism. The author implies that women have a leg-up in getting tech jobs because of diversity initiatives.",
-    "reply_1": "The challenges that arise in admissions affect women as well. Ideas like this foster an unwelcoming environment for marginalized groups on campus.",
+    "reply_1": "The challenges that arise in admissions affect women as well. Comments like this foster an unwelcoming environment for marginalized groups on campus.",
     "reply_2": "What do you mean by \"if you're a minority (i.e. female) that will help your chances a lot\"?",
-    "bot_reply_1": "The challenges that arise in admissions affect women as well. Ideas like this foster an unwelcoming environment for marginalized groups on campus.",
+    "bot_reply_1": "The challenges that arise in admissions affect women as well. Comments like this foster an unwelcoming environment for marginalized groups on campus.",
     "bot_reply_2": "What do you mean by \"if you're a minority (i.e. female) that will help your chances a lot\"?"
   }
 ];
-
 
 const config_old = [
     {
