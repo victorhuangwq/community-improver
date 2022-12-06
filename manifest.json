@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Community Improver",
   "version": "1.0",
-  "description": "Add the reading time to Chrome Extension documentation articles",
+  "description": "An extension that explains harmful Reddit comments to users.",
   "icons": {
     "16": "images/icon-16.png",
     "32": "images/icon-32.png",

@@ -1,7 +1,10 @@
 // options = perspectiveTaking, greaterGood
 let method = "perspectiveTaking";
+
 // sets sexism type
+// options = hostile, innocuous
 let sexism_type = "hostile";
+
 // options = bot, user
 let mode = "bot";
 
@@ -27,13 +30,11 @@ const initialize = () => {
       const bot_replies = [];
       const user_replies = [];
       for (const key in comment) {
-        if(key.includes("bot_reply_")){
-          bot_replies.push(comment[key])
-        }
-        else if(key.includes("reply_")){
-          user_replies.push(comment[key])
-        }
-        else{
+        if (key.includes("bot_reply_")) {
+          bot_replies.push(comment[key]);
+        } else if (key.includes("reply_")) {
+          user_replies.push(comment[key]);
+        } else {
           object[key] = comment[key];
         }
       }
@@ -41,7 +42,7 @@ const initialize = () => {
       config.push(object);
     }
   });
-}
+};
 
 // Injects CSS into the page
 const injectCSS = () => {
@@ -50,11 +51,10 @@ const injectCSS = () => {
   link.type = "text/css";
   link.rel = "stylesheet";
   document.getElementsByTagName("head")[0].appendChild(link);
-}
+};
 
 // Injects a block of comments into the page for each comment in the config
 const injectBlock = ({ id, explanation, replies, replacement_text }) => {
-
   // Get second div inside commentDiv
   const ele = getSecondDiv(id);
   const text = ele.querySelector(".RichTextJSON-root").querySelector("p");
@@ -62,8 +62,8 @@ const injectBlock = ({ id, explanation, replies, replacement_text }) => {
   console.log("text", text);
   text.innerHTML = replacement_text ?? text.innerHTML;
 
-  ele.querySelector('.RichTextJSON-root').innerHTML = text.outerHTML;
-  
+  ele.querySelector(".RichTextJSON-root").innerHTML = text.outerHTML;
+
   const newEle = document.createElement("div");
   const replyBlocks = replies.map((reply) => {
     const replyEle = document.createElement("div");
@@ -90,7 +90,7 @@ const injectBlock = ({ id, explanation, replies, replacement_text }) => {
         }:</p>
         <div id="replies"></div>
     </div>`;
-  
+
   if (ele) {
     ele.appendChild(newEle);
     replyBlocks.forEach((reply) => {
@@ -132,35 +132,42 @@ const commentGenerator = (avatar, userName, comment_id, comment) => {
   cloneDiv.querySelector('img[alt="User avatar"]').src = avatar
     ? avatar.src
     : "https://www.redditstatic.com/avatars/defaults/v2/avatar_default_6.png";
-  
+
   // Replace username with the userName
   cloneDiv.querySelector('a[data-testid="comment_author_link"]').innerText =
     userName;
-  
+
   // Remove OP label if it exists
   cloneDiv.querySelector(`#CommentTopMeta--OP--${comment_id}`)?.remove();
 
   // Remove flair if it exists
-  if(cloneDiv.querySelector('div[data-testid="post-comment-header"]').children.length > 1){
-    cloneDiv.querySelector('div[data-testid="post-comment-header"]').children[1].remove();
+  if (
+    cloneDiv.querySelector('div[data-testid="post-comment-header"]').children
+      .length > 1
+  ) {
+    cloneDiv
+      .querySelector('div[data-testid="post-comment-header"]')
+      .children[1].remove();
   }
 
   // Change time to 1 second ago
   cloneDiv.querySelector(`#CommentTopMeta--Created--${comment_id}`).innerText =
     "1 second ago";
-  
+
   // Change # of upvotes to 1
   cloneDiv
     .querySelector(`#vote-arrows-${comment_id}`)
     .querySelector("div").innerText = "1";
 
   // Replace div's comment with comment
-  const paragraph = cloneDiv.querySelector(".RichTextJSON-root").querySelector("p");
+  const paragraph = cloneDiv
+    .querySelector(".RichTextJSON-root")
+    .querySelector("p");
   paragraph.innerText = comment;
   paragraph.classList.add("comment-text");
 
-  cloneDiv
-    .querySelector('div[data-testid="comment"]').innerHTML = paragraph.outerHTML;
+  cloneDiv.querySelector('div[data-testid="comment"]').innerHTML =
+    paragraph.outerHTML;
 
   cloneDiv.style.zIndex = 99999;
 
@@ -171,25 +178,22 @@ const commentGenerator = (avatar, userName, comment_id, comment) => {
 };
 
 const addComment = (parent_comment_id, comment) => {
-  
   console.log("comment", comment);
   const userDropdown = document.querySelector("#USER_DROPDOWN_ID");
   const avatar = userDropdown.querySelector('img[alt="User avatar"]');
-  
+
   // Getting user name, get first span of #email-collection-tooltip-id
   const userName = document
     .querySelector("#email-collection-tooltip-id")
     .querySelector("span")
     .querySelector("span").innerText;
-  
+
   // Adds delay to make it feel real
-  setTimeout(function() {
-    if(mode === "bot"){
+  setTimeout(function () {
+    if (mode === "bot") {
       commentGenerator(null, "Community Bot", parent_comment_id, comment);
-    }
-    else{
+    } else {
       commentGenerator(avatar, userName, parent_comment_id, comment);
     }
   }, delayInMilliseconds);
-
 };
